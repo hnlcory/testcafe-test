@@ -2,6 +2,7 @@ import { landingPage } from './landing.page';
 import { signinPage } from './signin.page';
 import { signoutPage } from './signout.page';
 import { navBar } from './navbar.component';
+import { listStuffPage } from './liststuff.page';
 
 /* global fixture:false, test:false */
 
@@ -9,7 +10,15 @@ import { navBar } from './navbar.component';
 const credentials = { username: 'john@foo.com', password: 'changeme' };
 
 fixture('meteor-application-template-react localhost test with default db')
-    .page('http://localhost:3000');
+  .page('http://localhost:3000');
+
+test('Test the List Stuff page', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentials.username, credentials.password);
+  await navBar.gotoListStuffPage(testController);
+  await listStuffPage.isDisplayed(testController);
+  await listStuffPage.hasTable(testController);
+});
 
 test('Test that landing page shows up', async (testController) => {
   await landingPage.isDisplayed(testController);
